@@ -19,10 +19,6 @@
         }
     }
 
-    function search(){
-        
-    }
-
     watch(searchInput, displaySerchOptions)
 
 </script>
@@ -30,9 +26,7 @@
 <template>
     <header>
         <div id="left" class="aria">
-            <h1>
-                <a href="">Hammer Finder</a>
-            </h1>
+            <h1 @click="$emit('home')">Hammer Finder</h1>
         </div>
         <div id="center" class="aria">
             <ul>
@@ -42,11 +36,11 @@
         </div>
         <div id="right" class="aria">
             <input v-model="searchInput" placeholder="search">
-            <button @click="search">search</button>
+            <button @click="$emit('search', searchInput)">search</button>
             <div :style="{visibility: viseble}" id="options">
                 <ul>
                     <li class="option" v-for="element in filterdList">
-                        <p>{{ element }}</p>
+                        <p @click="$emit('search', element)">{{ element }}</p>
                     </li>
                 </ul>
             </div>

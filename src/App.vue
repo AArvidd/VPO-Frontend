@@ -6,25 +6,29 @@ import searchSite from "./components/SearchSite.vue"
 
 import LFooter from "./components/LowerFooter.vue"
 
-import { ref } from "vue"
+import { ref, provide } from "vue"
 
-let mode = ref(0)
+let mode = ref(0);
 
+let searchInput = ref("");
 
-function search(s) {
-  mode.value = 1;
+function cahingeView(to) {
+  mode.value = to;
 }
 
+function sUppdate(s){
+  searchInput.value = s;
+}
 
 </script>
 
 <template>
-  <div>
-    <UHeader @search="search" @home="mode = 0"/>
+  <div id="top">
+    <UHeader @chainge="cahingeView" @uppdate="sUppdate"/>
   </div>
-  <div>
+  <div id="center">
     <home v-if="mode == 0"/>
-    <searchSite v-else-if="mode == 1" />
+    <searchSite :search="searchInput" v-else-if="mode == 1" />
   </div>
   <div>
     <LFooter />
@@ -33,4 +37,12 @@ function search(s) {
 
 <style scoped>
 
+  #top{
+    position: sticky;
+    top: 0px;
+  }
+
+  #center {
+    min-height: calc(61vh);
+  }
 </style>

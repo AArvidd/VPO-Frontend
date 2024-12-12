@@ -61,7 +61,6 @@ article {
 }
 
 #right {
-    z-index: -1;
     margin-left: 50px;
     width: 60vw;
 }

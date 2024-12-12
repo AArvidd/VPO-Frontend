@@ -1,46 +1,45 @@
 <script setup>
     import { computed, ref, watch } from "vue"
+    let emit = defineEmits(['uppdate', "chainge"]);
 
     let SearchOptions = ["40000", "40k", "Age of Sigmar", "AOS", "Space Marines", "Skaven"]; // from database
 
     let searchInput = ref("");
-
-    let viseble = "hidden";
+    let searchFocus = ref(false);
+    let hover = ref(false);
 
     let filterdList = computed(() => {
         return SearchOptions.filter((t) => t.toLocaleLowerCase().includes(searchInput.value.toLocaleLowerCase()));
     })
 
-    function displaySerchOptions(){
-        if(searchInput.value === ""){
-            viseble = "hidden"
-        }else{
-            viseble = "visible";
-        }
+    function click(s){
+        searchInput.value = s;
+        emit("chainge", 1);
     }
 
-    watch(searchInput, displaySerchOptions)
+
+    watch(searchInput, () => {emit('uppdate', searchInput.value)})
 
 </script>
 
 <template>
     <header>
         <div id="left" class="aria">
-            <h1 @click="$emit('home')">Hammer Finder</h1>
+            <h1 @click="$emit('chainge', 0)">Hammer Finder</h1>
         </div>
         <div id="center" class="aria">
             <ul>
                 <li><a href="">poste challenge</a></li>
-                <li><a href="">find opponent</a></li>
+                <li @click="$emit('chainge', 1)">find opponent</li>
             </ul>
         </div>
         <div id="right" class="aria">
-            <input v-model="searchInput" placeholder="search">
-            <button @click="$emit('search', searchInput)">search</button>
-            <div :style="{visibility: viseble}" id="options">
+            <input v-model="searchInput" @focus="searchFocus = true" @blur="searchFocus = false"  placeholder="search">
+            <button @click="$emit('chainge', 1)">search</button>
+            <div v-if="(searchFocus && searchInput !== '') || hover" id="options" @mouseover="hover = true" @mouseleave="hover = false">
                 <ul>
                     <li class="option" v-for="element in filterdList">
-                        <p @click="$emit('search', element)">{{ element }}</p>
+                        <p @click="click(element)">{{ element }}</p>
                     </li>
                 </ul>
             </div>
@@ -58,6 +57,7 @@ header {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 2px solid black;
 }
 
 .aria {

@@ -29,8 +29,8 @@
         </div>
         <div id="center" class="aria">
             <ul>
-                <li><a href="">poste challenge</a></li>
-                <li @click="$emit('chainge', 1)">find opponent</li>
+                <li @click="$emit('chainge', 2)">Poste challenge</li>
+                <li @click="$emit('chainge', 1)">Find opponent</li>
             </ul>
         </div>
         <div id="right" class="aria">

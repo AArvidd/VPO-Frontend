@@ -45,7 +45,7 @@ let filterdList = computed(() => {
         if(inputs.search === ""){
             return true
         }
-        if(t.faction.toLocaleLowerCase() === inputs.search.toLocaleLowerCase()){
+        if(t.faction.toLocaleLowerCase().includes(inputs.search.toLocaleLowerCase())){
             return true;
         }
         for(let i in t.tags){

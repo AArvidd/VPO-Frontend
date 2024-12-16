@@ -3,6 +3,7 @@ import UHeader from "./components/UpperHedder.vue"
 
 import home from "./components/Home.vue"
 import searchSite from "./components/SearchSite.vue"
+import submition from "./components/Submition.vue"
 
 import LFooter from "./components/LowerFooter.vue"
 
@@ -29,6 +30,7 @@ function sUppdate(s){
   <div id="center">
     <home v-if="mode == 0"/>
     <searchSite :search="searchInput" v-else-if="mode == 1" />
+    <submition v-else-if="mode == 2"/>
   </div>
   <div>
     <LFooter />

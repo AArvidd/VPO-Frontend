@@ -28,9 +28,9 @@ function sUppdate(s){
     <UHeader @chainge="cahingeView" @uppdate="sUppdate"/>
   </div>
   <div id="center">
-    <home v-if="mode == 0"/>
+    <home v-if="mode == 0" @chainge="cahingeView"/>
     <searchSite :search="searchInput" v-else-if="mode == 1" />
-    <submition v-else-if="mode == 2"/>
+    <submition v-else-if="mode == 2" @chainge="cahingeView"/>
   </div>
   <div>
     <LFooter />

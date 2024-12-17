@@ -1,4 +1,6 @@
 <script setup>
+import { errorMessages } from 'vue/compiler-sfc';
+
 
 
 
@@ -34,11 +36,11 @@
             </article>
         </div>
         <div id="right">
-            <div class="block">
+            <div class="block" @click="$emit('chainge', 2)">
                 <h2>Poste chalange</h2>
                 <p>Poast your chalange hear</p>
             </div>
-            <div class="block">
+            <div class="block" @click="$emit('chainge', 1)">
                 <h2>Find Chalange</h2>
                 <p>Finde a chalenger</p>
             </div>

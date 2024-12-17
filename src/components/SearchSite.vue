@@ -1,47 +1,16 @@
 <script setup>
-import { compile, computed, watch, inject } from "vue";
+import { compile, computed, watch, inject, ref } from "vue";
 import sArticle from "./SearchArticle.vue";
 
 let inputs = defineProps({
     search: String,
 })
 
-let list = [    // from database
-    {
-        name: "Army one",
-        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam, soluta, perferendis delectus tempore voluptates quam ratione quis a illo asperiores quae animi pariatur repudiandae amet aliquid et in consequatur. Nisi?",
-        faction: "Necron",
-        points: 2000
-    },
-    {
-        name: "My army",
-        faction: "Ultramarines",
-        points: 2000,
-        tags: ["Space Marines"],
-    },
-    {
-        name: "theft",
-        faction: "Blodraven",
-        points: 2000,
-        tags: ["Space Marinse"]
-    },
-    {
-        name: "WAAAAAH",
-        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam, soluta, perferendis delectus tempore voluptates quam ratione quis a illo asperiores quae animi pariatur repudiandae amet aliquid et in consequatur. Nisi?",
-        faction: "Orks",
-        points: 3000,
-        tags: ["gork", "mork"],
-    },
-]
-
-let factions = [ // from database
-    "Ultramarines",
-    "Necron",
-    "Orks"
-]
+let articles = ref([]) // from database
+populate()
 
 let filterdList = computed(() => {
-    return list.filter((t) => {
+    return articles.value.filter((t) => {
         if(inputs.search === ""){
             return true
         }
@@ -56,6 +25,11 @@ let filterdList = computed(() => {
         return false;
     })
 })
+
+async function populate(){
+    let respons = await fetch("http://localhost:3030/article")
+    articles.value = await respons.json()
+}
 
 </script>
 

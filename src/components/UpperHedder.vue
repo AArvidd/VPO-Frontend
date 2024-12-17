@@ -2,23 +2,42 @@
     import { computed, ref, watch } from "vue"
     let emit = defineEmits(['uppdate', "chainge"]);
 
-    let SearchOptions = ["40000", "40k", "Age of Sigmar", "AOS", "Space Marines", "Skaven"]; // from database
-
+    let SearchOptions = [] // from database
     let searchInput = ref("");
     let searchFocus = ref(false);
     let hover = ref(false);
 
+    getSeartchOptions()
+    
+    
     let filterdList = computed(() => {
         return SearchOptions.filter((t) => t.toLocaleLowerCase().includes(searchInput.value.toLocaleLowerCase()));
     })
-
+    
     function click(s){
         searchInput.value = s;
         emit("chainge", 1);
     }
-
-
+    
+    
     watch(searchInput, () => {emit('uppdate', searchInput.value)})
+    
+    async function getSeartchOptions(){
+        let respons = await fetch("http://localhost:3030/factions")
+        let factions = await respons.json()
+        
+        for(let i in factions){
+            SearchOptions.push(factions[i].name)
+        }
+
+        for(let i in factions){
+            for(let tag in factions[i].tags){
+                if(!SearchOptions.includes(factions[i].tags[tag])){
+                    SearchOptions.push(factions[i].tags[tag]);
+                }
+            }
+        }
+    }
 
 </script>
 
@@ -38,7 +57,7 @@
             <button @click="$emit('chainge', 1)">search</button>
             <div v-if="(searchFocus && searchInput !== '') || hover" id="options" @mouseover="hover = true" @mouseleave="hover = false">
                 <ul>
-                    <li class="option" v-for="element in filterdList">
+                    <li class="option" v-for="element in filterdList.slice(0, 10)">
                         <p @click="click(element)">{{ element }}</p>
                     </li>
                 </ul>

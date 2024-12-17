@@ -1,22 +1,60 @@
 <script setup>
+    import { ref, onBeforeMount } from "vue"
 
-import { ref } from "vue"
+    let emit = defineEmits("chainge")
 
-let factions = [ // from database
-    "Ultramarines",
-    "Necron",
-    "Orks"
-]
-
-let name = ref("");
-let faction = ref("");
-let points = ref();
-let description = ref("");
-
-function foo(form) {
-    form.preventDefault();
+    let factionTags
     
-}
+    let factions = ref([]); // from database
+    
+    
+    getFactions();
+    
+    let name = ref("");
+    let faction = ref("");
+    let points = ref();
+    let description = ref("");
+    
+    async function foo(form) {
+        form.preventDefault();
+        let out = {
+            name: name.value,
+            faction: faction.value,
+            points: points.value,
+            tags:[]
+        }
+        if(description.value){
+            out["description"] = description.value
+        }
+
+        for(let i in factionTags){
+            if(out.faction == factionTags[i].name){
+                for(let j = 0; j < factionTags[j].tags.length; j++){
+                    out.tags.push(factionTags[i].tags[j])
+                }
+                break;
+            }
+        }
+
+        let jsonS = JSON.stringify(out)
+
+        let respons = await fetch("http://localhost:3030/article", {method: "POST", body: jsonS})
+
+        if(!respons.ok){
+            alert("Bad request\nCould not send in challenge")
+        }else{
+            emit("chainge", 0)
+        }
+    }
+    
+    async function getFactions(){
+        let respons = await fetch("http://localhost:3030/factions")
+        factionTags = await respons.json()
+
+        for(let i in factionTags){
+            factions.value.push(factionTags[i].name)
+        }
+    }
 
 </script>
 
